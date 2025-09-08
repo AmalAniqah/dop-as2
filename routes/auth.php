@@ -25,6 +25,7 @@ Route::post('/register', function (Request $request) {
         'password' => bcrypt($request->password),
     ]);
 
+    // Fire registered event to trigger email
     event(new Registered($user));
 
     // Auto-login the user
@@ -47,7 +48,7 @@ Route::middleware('guest')->group(function () {
 // ---------------------
 // Auth routes (verified)
 // ---------------------
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     // Verification notice page
     Volt::route('verify-email', 'auth.verify-email')->name('verification.notice');
